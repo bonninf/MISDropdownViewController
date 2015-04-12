@@ -25,6 +25,7 @@ Or just add the files from the MISDropdownViewController folder to your project.
 
 ## Usage
 
+```objective-c
 MISDropdownViewController dropdownViewController = [[MISDropdownViewController alloc] initWithPresentationMode:MISDropdownViewControllerPresentationModeAutomatic];
 dropdownViewController.contentView = dropdownMenuView; // Some content view
 
@@ -37,6 +38,7 @@ CGRect rect = [sender convertRect:[sender bounds] toView:self.view];
 
 // Hide
 [dropdownViewController dismissDropdownAnimated:YES];
+```
 
 
 ## Creator
