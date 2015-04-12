@@ -26,6 +26,7 @@ Or just add the files from the MISDropdownViewController folder to your project.
 ## Usage
 
 ```objective-c
+// Create MISDropdownViewController
 MISDropdownViewController dropdownViewController = [[MISDropdownViewController alloc] initWithPresentationMode:MISDropdownViewControllerPresentationModeAutomatic];
 dropdownViewController.contentView = dropdownMenuView; // Some content view
 
