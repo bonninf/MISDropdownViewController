@@ -94,12 +94,21 @@ static NSString *MISDropdownMenuViewCellIdentifier = @"MISDropdownMenuViewCellId
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isRowSelected = (indexPath.row == self.selectedItemIndex);
-    NSString *item = self.items[indexPath.row];
+    
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MISDropdownMenuViewCellIdentifier forIndexPath:indexPath];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.text = item;
-    cell.textLabel.textColor = isRowSelected ? self.selectedTextLabelColor : self.textLabelColor;
+    
+    //fb: manage attributed string for menu
+    id<NSObject> item = self.items[indexPath.row];
+    if ([item isKindOfClass:[NSString class]]) {
+        cell.textLabel.text = (NSString *)item;
+        cell.textLabel.textColor = isRowSelected ? self.selectedTextLabelColor : self.textLabelColor;
+    }
+    else if ([item isKindOfClass:[NSAttributedString class]]) {
+        cell.textLabel.attributedText = (NSAttributedString *)item;
+    }
+    
     return cell;
 }
 

@@ -27,15 +27,55 @@
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleMenu:)];
     self.navigationItem.leftBarButtonItem = barButtonItem;
     
-    self.dropdownMenuView = [[MISDropdownMenuView alloc] initWithItems:@[@"Item1", @"Item2", @"Item3"]];
+    //Manage menu with attributed string (fb:gh#1)
+    NSInteger menuCounter = 4;
+    NSMutableArray *mutableMenus = [NSMutableArray arrayWithCapacity:menuCounter];
+    for (int i = 0; i < menuCounter; i++) {
+        NSString *iString = [NSString stringWithFormat:@"%d", i];
+        NSAttributedString *extract1 = [[NSAttributedString alloc] initWithString:iString attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}];
+        NSAttributedString *extract2 = [[NSAttributedString alloc] initWithString:@"  The menu" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
+        
+        NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithAttributedString:extract1];
+        [mutableString appendAttributedString:extract2];
+        [mutableMenus addObject:[mutableString copy]];
+        
+    }
+    
+    self.dropdownMenuView = [[MISDropdownMenuView alloc] initWithItems:mutableMenus];
+    //self.dropdownMenuView = [[MISDropdownMenuView alloc] initWithItems:@[@"menu 0", @"menu 1", @"menu 2", @"menu 3"]];
+    
     self.dropdownMenuView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.dropdownMenuView addTarget:self action:@selector(dropMenuChanged:) forControlEvents:UIControlEventValueChanged];
     
     self.selectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 200, CGRectGetWidth(self.view.frame), 20.0)];
     self.selectionLabel.textAlignment = NSTextAlignmentCenter;
     self.selectionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.selectionLabel.text = self.dropdownMenuView.items[self.dropdownMenuView.selectedItemIndex];
+    
+    //Manage menu with attributed string (fb:gh#1)
+    [self setLabel:self.selectionLabel content:self.dropdownMenuView.items[self.dropdownMenuView.selectedItemIndex]];
+
     [self.view addSubview:self.selectionLabel];
+}
+
+/**
+ * Set either text or attributed text property for the ui label in parameter according to the type of the content.
+ * TODO: this method should be into a UILabel category.
+ *
+ * @author fb
+ * @version fb:gh#1
+ */
+- (void)setLabel:(UILabel *)label content:(id)content
+{
+    if (![label isKindOfClass:[UILabel class]]) {
+        return;
+    }
+    
+    if ([content isKindOfClass:[NSString class]]) {
+        label.text = (NSString *)content;
+    }
+    else if ([content isKindOfClass:[NSAttributedString class]]) {
+        label.attributedText = (NSAttributedString *)content;
+    }
 }
 
 
@@ -46,7 +86,9 @@
     [self.dropdownViewController dismissDropdownAnimated:YES];
     
     NSInteger selectedItemIndex = [dropDownMenuView selectedItemIndex];
-    self.selectionLabel.text = dropDownMenuView.items[selectedItemIndex];
+
+    //Manage menu with attributed string (fb:gh#1)
+    [self setLabel:self.selectionLabel content:self.dropdownMenuView.items[selectedItemIndex]];
 }
 
 - (void)toggleMenu:(id)sender
