@@ -10,7 +10,7 @@
 
 Pod::Spec.new do |s|
   s.name         = 'MISDropdownViewController'
-  s.version      = '1.0.0'
+  s.version      = '1.1.0'
   s.summary      = 'Simple UI component that represents content as dropdown on iPhone and popover on iPad by default.'
   s.description  = <<-DESC
                     Simple UI component that represents the content as dropdown on iPhone and popover on iPad by default.
